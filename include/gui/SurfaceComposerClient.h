@@ -109,12 +109,6 @@ public:
     //! Close a composer transaction on all active SurfaceComposerClients.
     static void closeGlobalTransaction(bool synchronous = false);
 
-#ifdef QCOM_LEGACY
-    // Get information about a display
-    static ssize_t getDisplayWidth(int32_t dpy);
-    static ssize_t getDisplayHeight(int32_t dpy);
-#endif
-
     //! Flag the currently open transaction as an animation transaction.
     static void setAnimationTransaction();
 
@@ -171,6 +165,7 @@ class ScreenshotClient
     PixelFormat mFormat;
 public:
     ScreenshotClient();
+    status_t update();
 
     // frees the previous screenshot and capture a new one
     status_t update(const sp<IBinder>& display);
