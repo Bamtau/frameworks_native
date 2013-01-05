@@ -20,6 +20,7 @@ LOCAL_SRC_FILES:= \
     Transform.cpp                           \
     
 
+LOCAL_CFLAGS:= -fno-strict-aliasing
 LOCAL_CFLAGS:= -DLOG_TAG=\"SurfaceFlinger\"
 LOCAL_CFLAGS += -DGL_GLEXT_PROTOTYPES -DEGL_EGLEXT_PROTOTYPES
 
