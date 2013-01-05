@@ -109,6 +109,8 @@ public:
     //! Close a composer transaction on all active SurfaceComposerClients.
     static void closeGlobalTransaction(bool synchronous = false);
 
+    static int setOrientation(int32_t dpy, int orientation, uint32_t flags);
+
     //! Flag the currently open transaction as an animation transaction.
     static void setAnimationTransaction();
 
@@ -165,6 +167,10 @@ class ScreenshotClient
     PixelFormat mFormat;
 public:
     ScreenshotClient();
+
+    // TODO: Remove me.  Do not use.
+    // This is a compatibility shim for one product whose drivers are depending on
+    // this legacy function (when they shouldn't).
     status_t update();
 
     // frees the previous screenshot and capture a new one

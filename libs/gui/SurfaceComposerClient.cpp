@@ -393,6 +393,15 @@ void Composer::setDisplayProjection(const sp<IBinder>& token,
     mForceSynchronous = true; // TODO: do we actually still need this?
 }
 
+status_t Composer::setOrientation(int orientation) {
+    sp<ISurfaceComposer> sm(ComposerService::getComposerService());
+    sp<IBinder> token(sm->getBuiltInDisplay(ISurfaceComposer::eDisplayIdMain));
+    DisplayState& s(getDisplayStateLocked(token));
+    s.orientation = orientation;
+    mForceSynchronous = true; // TODO: do we actually still need this?
+    return NO_ERROR;
+}
+
 // ---------------------------------------------------------------------------
 
 SurfaceComposerClient::SurfaceComposerClient()
@@ -571,6 +580,11 @@ status_t SurfaceComposerClient::setMatrix(SurfaceID id, float dsdx, float dtdx,
     return getComposer().setMatrix(this, id, dsdx, dtdx, dsdy, dtdy);
 }
 
+status_t SurfaceComposerClient::setOrientation(int32_t dpy, int orientation, uint32_t flags)
+{
+    return Composer::getInstance().setOrientation(orientation);
+}
+
 // ----------------------------------------------------------------------------
 
 void SurfaceComposerClient::setDisplaySurface(const sp<IBinder>& token,
@@ -622,7 +636,7 @@ ScreenshotClient::ScreenshotClient()
     : mWidth(0), mHeight(0), mFormat(PIXEL_FORMAT_NONE) {
 }
 
-// TODO: Remove me. Do not use.
+// TODO: Remove me.  Do not use.
 // This is a compatibility shim for one product whose drivers are depending on
 // this legacy function (when they shouldn't).
 status_t ScreenshotClient::update() {
